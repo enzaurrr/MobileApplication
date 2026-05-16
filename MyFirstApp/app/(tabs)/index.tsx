@@ -1,10 +1,9 @@
 import { useState } from 'react'; 
 import { Image } from 'expo-image';
-import { StyleSheet, View, Text, TextInput } from 'react-native'; 
+import { Button, StyleSheet, View, Text, TextInput } from 'react-native'; 
 
 export default function App() {
 
-  
   const myName = "Enzo"; 
   const greet = (name) => {
     return `Hi ${name}! Hope you're having a great day.`; 
@@ -12,8 +11,12 @@ export default function App() {
   const classmates = ["Vera", "Bu", "Raf", "Mish", "Sir"]; 
   console.log(classmates.map(name => greet(name)));
   
-  
   const [name, setName] = useState('');
+  const [count, setCount] = useState(0);
+
+  const counterMessage = count > 0 
+    ? `${name || 'Enzo'}, you tapped ${count} times!` 
+    : "Tap the + button to start";
 
   return (
     <View style={s.screen}>
@@ -22,7 +25,6 @@ export default function App() {
         style={s.photo} 
       />
       
-      
       <TextInput
         placeholder="Type your name..."
         onChangeText={setName}
@@ -30,10 +32,17 @@ export default function App() {
         style={s.input}
       />
       
-      
       <Text style={s.name}>
-        {name ? `Hello, ${name}!` : "John Enzo Salon"}
+        {name === '' ? "Please enter your name" : `Hello, ${name}!`}
       </Text>
+
+      <Text style={s.counterText}>{counterMessage}</Text>
+
+      <View style={s.buttonContainer}>
+        <Button title="+" onPress={() => setCount(count + 1)} />
+        <Button title="-" onPress={() => setCount(count - 1)} />
+        <Button title="Reset" onPress={() => setCount(0)} />
+      </View>
       
       <Text style={s.bio}>Bachelor of Multimedia Arts</Text>
       <Text style={s.bio}>He / Him - Specializes in Film</Text>
@@ -41,8 +50,7 @@ export default function App() {
   );
 }
 
-
-// I added a TextInput component and used useState to make the name interactive. 05/15/2026
+// Added multiple useState blocks, a tap counter, and conditional rendering messages. 05/16/2026
 const s = StyleSheet.create({
   screen: { 
     flex: 1, 
@@ -62,7 +70,7 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
-    width: 200,
+    width: 250,
     borderRadius: 5,
     textAlign: 'center'
   },
@@ -70,6 +78,18 @@ const s = StyleSheet.create({
     fontSize: 22, 
     fontWeight: 'bold', 
     marginTop: 12 
+  },
+  counterText: {
+    fontSize: 16,
+    color: '#333',
+    marginVertical: 10,
+    textAlign: 'center'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 220,
+    marginVertical: 15
   },
   bio: { 
     fontSize: 14, 
